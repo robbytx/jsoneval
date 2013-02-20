@@ -1,1 +1,8 @@
-node "`dirname $0`/jsoneval.js" "$@"
+#! /bin/bash
+
+SRC=$0
+while [ -h "$SRC" ]; do
+    SRC="`readlink $SRC`"
+done
+
+node "`dirname $SRC`/jsoneval.js" "$@"
