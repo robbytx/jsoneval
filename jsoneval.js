@@ -1,5 +1,4 @@
 function main() {
-    var fs = require('fs');
     var ARGV = process.argv;
 
     if (ARGV.length < 3) {
@@ -7,34 +6,47 @@ function main() {
         process.exit(1);
     }
 
-    var transform = ARGV[2];
-    if (fs.existsSync(transform)) {
-        transform = fs.readFileSync(transform, "utf8");
+    var transformFn = createTransform(ARGV[2]);
+
+    readInput(ARGV[3], function (input) {
+        console.log(JSON.stringify(transformFn(input)));
+    });
+}
+
+function createTransform(argument) {
+    var fs = require('fs');
+
+    var transformScript = argument;
+    if (fs.existsSync(transformScript)) {
+        transformScript = fs.readFileSync(transformScript, "utf8");
     }
-    var apply = makeApply(transform);
+    return makeTransformFn(transformScript);
+}
+
+// limit variable exposure
+function makeTransformFn(script) {
+    return function transform(input) {
+        return eval(script);
+    };
+}
+
+function readInput(file, callback) {
+    var fs = require('fs');
 
     var inputStream;
-    if (ARGV[3]) {
-        inputStream = fs.createReadStream(ARGV[3], {encoding: 'utf8'});
+    if (file) {
+        inputStream = fs.createReadStream(file, {encoding: 'utf8'});
     } else {
         inputStream = process.stdin;
         inputStream.resume();
         inputStream.setEncoding('utf8');
     }
 
-    var stdinJson = "";
-    inputStream.on('data', function (chunk) { stdinJson += chunk; });
+    var json = "";
+    inputStream.on('data', function (chunk) { json += chunk; });
     inputStream.on('end', function () {
-        apply(JSON.parse(stdinJson));
+        callback(JSON.parse(json));
     });
-}
-
-// the core algorithm
-function makeApply(script) {
-    return function apply(input) {
-        // input will be referenced by script
-        console.log(JSON.stringify(eval(script)));
-    };
 }
 
 // go!
