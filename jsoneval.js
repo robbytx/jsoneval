@@ -9,7 +9,7 @@ function main() {
     var transformFn = createTransform(ARGV[2]);
 
     readInput(ARGV[3], function (input) {
-        console.log(JSON.stringify(transformFn(input)));
+        console.log(JSON.stringify(transformFn(input)).replace(/%/g, "%%"));
     });
 }
 
