@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 function main() {
     var ARGV = process.argv;
 
@@ -9,7 +11,10 @@ function main() {
     var transformFn = createTransform(ARGV[2]);
 
     readInput(ARGV[3], function (input) {
-        console.log(JSON.stringify(transformFn(input)).replace(/%/g, "%%"));
+        var result = JSON.stringify(transformFn(input));
+        if (typeof result === 'string') {
+            console.log(result.replace(/%/g, "%%"));
+        }
     });
 }
 
