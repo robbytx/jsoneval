@@ -30,6 +30,14 @@ function createTransform(argument) {
 
 // limit variable exposure
 function makeTransformFn(script) {
+    function attr(key, value) {
+      return function(object) {
+        return object[key] === value;
+      }
+    }
+    Array.prototype.withId = function(id) {
+      return this.filter(attr("id",id))[0];
+    };
     return function transform(input) {
         return eval(script);
     };
