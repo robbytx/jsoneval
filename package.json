@@ -1,0 +1,23 @@
+{
+  "name": "jsoneval",
+  "version": "1.0.0",
+  "description": "Eval JSON input",
+  "main": "jsoneval.js",
+  "bin": {
+    "jsoneval": "./jsoneval.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robbytx/jsoneval.git"
+  },
+  "keywords": [
+    "json",
+    "eval"
+  ],
+  "author": "Robby Morgan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robbytx/jsoneval/issues"
+  },
+  "homepage": "https://github.com/robbytx/jsoneval#readme"
+}
